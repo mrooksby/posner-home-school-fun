@@ -4,27 +4,34 @@ author: "maki kiko minako"
 date: "02/04/2020"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+ We did Posner's classic gaze cuing experiment on psytoolkit.org. We recorded the results for us 3 participants, entered them into a csv file and tried to visualise them. 
+ 
+```{r set up}
+library(tidyverse)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r get data}
+read_csv("posner.csv")
+```
+```{r read data}
+posner_data <- read.csv("posner.csv")
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r bar chart with count}
+ggplot(posner_data, aes(x=type, fill= id)) + geom_bar(position = "dodge", alpha =.6)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r scatterplot}
+ggplot(posner_data, aes(x=type, y= rt, color = id))+geom_point()+ scale_x_discrete(name="cue type (valid or invalid)") + scale_y_continuous(name="Reaction Time(msec)") + geom_smooth(method = lm)
+```
+
+```{r}
+ggplot(posner_data, aes(x = type, y=rt, color=id)) + geom_boxplot() + geom_point() +geom_jitter(height = 0, width = .1) + scale_x_discrete(name="cue type (valid or invalid)") + scale_y_continuous(name="Reaction Time(msec)") + scale_fill_discrete(guide = FALSE)
+```
+
+```{r}
+```
+
+
